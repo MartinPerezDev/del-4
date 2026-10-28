@@ -1,0 +1,219 @@
+const API_BASE = "http://localhost:8080/api/v2";
+
+//Auth User
+export async function getUser(id) {
+    const response = await fetch(API_BASE + "/users/" + id, {
+        method: "get",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        }
+    });
+    const user = await response.json();
+    return user;
+}
+
+export async function getUsers(token) {
+    const response = await fetch(API_BASE + "/users/", {
+        method: "get",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        }
+    });
+    const data = await response.json();
+    return data.users;
+}
+
+export async function updateUserRole(id, role, token) {
+    const response = await fetch(API_BASE + "/users/" + id + "/role", {
+        method: "put",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({ role })
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function updateUserById(id, updates, token) {
+    const response = await fetch(API_BASE + "/users/" + id, {
+        method: "put",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(updates)
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function deleteUser(id, token) {
+    const response = await fetch(API_BASE + "/users/" + id, {
+        method: "delete",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json",
+        }
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function login(username, password) {
+    const response = await fetch(API_BASE + "/auth/login", {
+        method: "post",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username, password })
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function register(name, lastname, dni, username, password) {
+    const response = await fetch(API_BASE + "/auth/register", {
+        method: "post",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name, lastname, dni, username, password })
+    });
+    const data = await response.json();
+    return data;
+}
+
+export function saveSession(token, role) {
+    localStorage.setItem("userToken", token);
+    localStorage.setItem("userRole", role);
+}
+
+export function getToken() {
+    const token = localStorage.getItem("userToken");
+    return token;
+}
+
+export function getRole() {
+    const role = localStorage.getItem("userRole");
+    return role;
+}
+
+export async function getMyUser(token) {
+    const response = await fetch(API_BASE + "/users/me", {
+        method: "get",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        }
+    });
+    const data = await response.json();
+    return data;
+}
+
+export function deleteSession() {
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userRole");
+
+}
+
+//Tools 
+export async function getTools(token) {
+    const response = await fetch(API_BASE + "/tools/", {
+        method: "get",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        }
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function createTool(newTool, token) {
+    const response = await fetch(API_BASE + "/tools/", {
+        method: "post",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ ...newTool })
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function deleteTool(id, token) {
+    const response = await fetch(API_BASE + "/tools/" + id, {
+        method: "delete",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+    });
+    const data = await response.json();
+    return data;
+}
+
+export async function updateToolByID(id, updates, token) {
+    const response = await fetch(API_BASE + "/tools/" + id, {
+        method: "put",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify(updates)
+    });
+    const data = await response.json();
+    return data;
+}
+
+//Orders
+export async function getOrders(token) {
+    const response = await fetch(API_BASE + "/orders/", {
+        method: "get",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+    })
+    const data = await response.json();
+    return data;
+}
+
+export async function createOrder(newOrder, token) {
+    const response = await fetch(API_BASE + "/orders/", {
+        method: "post",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ ...newOrder })
+    })
+    const data = await response.json();
+    return data;
+}
+
+export async function completeOrderById(id, token, tools) {
+    const response = await fetch(API_BASE + "/orders/" + id, {
+        method: "put",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({ tools })
+    })
+    const data = await response.json();
+    return data;
+}
+
+export async function getOrderById(id, token){
+    const response = await fetch(API_BASE + "/orders/" + id, {
+        method : "get",
+        headers : {
+            "Authorization": "Bearer" + token,
+            "content-type": "application/json"
+        }
+    })
+    const data = await response.json();
+    return data;
+}
